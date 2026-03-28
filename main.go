@@ -17,6 +17,7 @@ func main() {
 
 	mux.Handle("/app/", http.StripPrefix("/app", apiCfg.middlewareMetricsInc(appHandler)))
 	mux.HandleFunc("GET /api/healthz", HandleHealth)
+	mux.HandleFunc("POST /api/validate_chirp", HandleValidateChirp)
 	mux.HandleFunc("GET /admin/metrics", apiCfg.HandleMetrics)
 	mux.HandleFunc("POST /admin/reset", apiCfg.HandleReset)
 	srv := http.Server{
