@@ -29,7 +29,7 @@ func main() {
 	mux.Handle("/app/", http.StripPrefix("/app", apiCfg.middlewareMetricsInc(appHandler)))
 	mux.HandleFunc("GET /api/healthz", HandleHealth)
 
-	mux.HandleFunc("POST /api/validate_chirp", HandleValidateChirp)
+	mux.HandleFunc("POST /api/chirps", apiCfg.HandleCreateChirpy)
 
 	mux.HandleFunc("POST /api/users", apiCfg.CreateUser)
 
