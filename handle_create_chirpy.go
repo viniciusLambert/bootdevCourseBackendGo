@@ -5,19 +5,10 @@ import (
 	"net/http"
 	"slices"
 	"strings"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/database"
 )
-
-type Chirpy struct {
-	ID        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Body      string    `json:"body"`
-	UserID    string    `json:"user_id"`
-}
 
 func (cfg *apiConfig) HandleCreateChirpy(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()

@@ -1,5 +1,5 @@
 -- name: CreateChirpy :one
-INSERT INTO chirpys (id, created_at, updated_at, body, user_id)
+INSERT INTO chirps (id, created_at, updated_at, body, user_id)
 VALUES (
   gen_random_uuid(),
   NOW(),
@@ -10,3 +10,7 @@ VALUES (
 RETURNING *;
 
 
+-- name: GetChirps :many
+
+SELECT  * FROM chirps
+order By created_at;

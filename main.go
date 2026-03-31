@@ -30,6 +30,7 @@ func main() {
 	mux.HandleFunc("GET /api/healthz", HandleHealth)
 
 	mux.HandleFunc("POST /api/chirps", apiCfg.HandleCreateChirpy)
+	mux.HandleFunc("GET /api/chirps", apiCfg.HandleGetChirps)
 
 	mux.HandleFunc("POST /api/users", apiCfg.CreateUser)
 
