@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/auth"
+	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/database"
 )
 
 type User struct {
@@ -19,7 +21,8 @@ func (cfg *apiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	type requestBody struct {
-		Email string `json:"email"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
 	decoder := json.NewDecoder(r.Body)
@@ -30,7 +33,15 @@ func (cfg *apiConfig) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := cfg.db.CreateUser(r.Context(), params.Email)
+	hashPassword, err := auth.HashPassword(params.Password)
+	if err != nil {
+		respondWithError(w, 500, "error hasing password", err)
+	}
+
+	user, err := cfg.db.CreateUser(r.Context(), database.CreateUserParams{
+		Email:          params.Email,
+		HashedPassword: hashPassword,
+	})
 	if err != nil {
 		respondWithError(w, 500, "error creating user", err)
 		return
