@@ -58,12 +58,10 @@ func TestCheckPasswordHash(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			match, err := CheckPasswordHash(tt.password, tt.hash)
 			if (err != nil) != tt.wantErr {
-				if (err != nil) != tt.wantErr {
-					t.Errorf("CheckPasswordHash() error = %v, wantErr %v", err, tt.wantErr)
-				}
-				if !tt.wantErr && match != tt.matchPassword {
-					t.Errorf("CheckPasswordHash() expects %v, got %v", tt.matchPassword, match)
-				}
+				t.Errorf("CheckPasswordHash() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if !tt.wantErr && match != tt.matchPassword {
+				t.Errorf("CheckPasswordHash() expects %v, got %v", tt.matchPassword, match)
 			}
 		})
 	}
