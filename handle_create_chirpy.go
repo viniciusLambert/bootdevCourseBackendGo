@@ -6,20 +6,31 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/google/uuid"
+	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/auth"
 	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/database"
 )
 
 func (cfg *apiConfig) HandleCreateChirpy(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	type requestBody struct {
-		Body   string    `json:"body"`
-		UserID uuid.UUID `json:"user_id"`
+		Body string `json:"body"`
+	}
+
+	token, err := auth.GetBearerToken(r.Header)
+	if err != nil {
+		respondWithError(w, 401, "error Authentication Token not found", err)
+		return
+	}
+
+	userID, err := auth.ValidateJWT(token, cfg.jwtToken)
+	if err != nil {
+		respondWithError(w, 401, "error Authentication Token not found", err)
+		return
 	}
 
 	decoder := json.NewDecoder(r.Body)
 	params := requestBody{}
-	err := decoder.Decode(&params)
+	err = decoder.Decode(&params)
 	if err != nil {
 		respondWithError(w, 500, "error decoding parameters", err)
 		return
@@ -33,7 +44,7 @@ func (cfg *apiConfig) HandleCreateChirpy(w http.ResponseWriter, r *http.Request)
 
 	chirpy, err := cfg.db.CreateChirpy(r.Context(), database.CreateChirpyParams{
 		Body:   cleanedBody,
-		UserID: params.UserID,
+		UserID: userID,
 	})
 	if err != nil {
 		respondWithError(w, 500, "error creating chirpy", err)

@@ -22,6 +22,7 @@ func main() {
 	apiCfg := apiConfig{}
 	apiCfg.db = getDatabaseQueries(dbURL)
 	apiCfg.platform = os.Getenv("PLATFORM")
+	apiCfg.jwtToken = os.Getenv("JWT_TOKEN")
 
 	mux := http.NewServeMux()
 

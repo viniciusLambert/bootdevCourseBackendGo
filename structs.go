@@ -10,6 +10,7 @@ import (
 type apiConfig struct {
 	fileserverHits atomic.Int32
 	platform       string
+	jwtToken       string
 	db             *database.Queries
 }
 
