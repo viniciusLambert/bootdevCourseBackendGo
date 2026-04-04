@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -28,7 +27,6 @@ func (cfg *apiConfig) HandleGetChirps(w http.ResponseWriter, r *http.Request) {
 }
 
 func (cfg *apiConfig) HandleGetChirpByID(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ID: ", r.PathValue("chirpID"))
 	chirpID, err := uuid.Parse(r.PathValue("chirpID"))
 	if err != nil {
 		respondWithError(w, 404, "error parsing uuid", err)

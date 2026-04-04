@@ -33,7 +33,7 @@ func main() {
 	mux.HandleFunc("POST /api/chirps", apiCfg.HandleCreateChirpy)
 	mux.HandleFunc("GET /api/chirps", apiCfg.HandleGetChirps)
 	mux.HandleFunc("GET /api/chirps/{chirpID}", apiCfg.HandleGetChirpByID)
-	mux.HandleFunc("DELETE /api/chirps/{chirpID}", apiCfg.HandleDeleteChirpByID)
+	mux.HandleFunc("DELETE /api/chirps/{chirpID}", apiCfg.HandleDeleteChirp)
 
 	mux.HandleFunc("POST /api/users", apiCfg.CreateUser)
 	mux.HandleFunc("PUT /api/users", apiCfg.UpdateUser)
@@ -44,6 +44,8 @@ func main() {
 
 	mux.HandleFunc("GET /admin/metrics", apiCfg.HandleMetrics)
 	mux.HandleFunc("POST /admin/reset", apiCfg.HandleReset)
+
+	mux.HandleFunc("POST /api/polka/webhooks", apiCfg.HandleWebhookPolka)
 
 	srv := http.Server{
 		Addr:         ":" + port,
