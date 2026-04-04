@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/google/uuid"
+	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/auth"
 	"github.com/viniciusLambert/bootdevCourseBackendGo/internal/database"
 )
 
@@ -14,6 +16,18 @@ func (cfg *apiConfig) HandleWebhookPolka(w http.ResponseWriter, r *http.Request)
 		Data  struct {
 			UserID string `json:"user_id"`
 		} `json:"data"`
+	}
+
+	apiKey, err := auth.GetApiKey(r.Header)
+	if err != nil {
+		respondWithError(w, 401, "error Authentication Token not found", err)
+		return
+	}
+
+	polkaAPIKEY := os.Getenv("POLKA_SECRET")
+	if apiKey != polkaAPIKEY {
+		respondWithError(w, 401, "error Authentication Token not found", err)
+		return
 	}
 
 	decoder := json.NewDecoder(r.Body)

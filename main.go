@@ -16,7 +16,10 @@ func main() {
 	const filePathRoot = "."
 	const port = "8080"
 
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("error loading enviroment variables")
+	}
 	dbURL := os.Getenv("DB_URL")
 
 	apiCfg := apiConfig{}
